@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Grid} from 'semantic-ui-react';
 import {handleInitialData} from '../actions/shared';
@@ -9,7 +9,11 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className='App'></div>
+        <div className='App'>
+          <ContentGrid>
+            <p>New Start...</p>
+          </ContentGrid>
+        </div>
       </Router>
     );
   }
