@@ -1,18 +1,30 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {Grid} from 'semantic-ui-react';
 import {handleInitialData} from '../actions/shared';
 import {connect} from 'react-redux';
 import './App.css';
+import Login from "./Login";
+import Nav from "./Nav";
+import Home from "./Home";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.handleInitialData();
+  }
+
   render() {
+    const {authUser} = this.props;
     return (
       <Router>
         <div className='App'>
+        {authUser === null ? (
+          <Route
+        )}
           <ContentGrid>
             <p>New Start...</p>
           </ContentGrid>
+
         </div>
       </Router>
     );
