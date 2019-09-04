@@ -12,11 +12,10 @@ import {
 } from 'semantic-ui-react';
 import {setAuthUser} from '../actions/authUser';
 
-export default class Login extends Component {
+export class Login extends Component {
   state = {
     loading: false
   };
-
   handleLoading = () => {
     this.setState({loading: true});
   };
@@ -41,6 +40,7 @@ export default class Login extends Component {
     );
   }
 }
+
 const LoginHeader = () => (
   <Header as='h4' block attached='top' textAlign='center'>
     <Header.Content>Welcome to the Would You Rather App!</Header.Content>
@@ -136,3 +136,5 @@ function mapStateToProps({users}) {
     users: Object.values(users)
   };
 }
+
+export default Login;
