@@ -1,8 +1,22 @@
-export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
+import {saveQuestion} from '../utils/api';
+import {addQuestionToUser} from '../actions/users';
 
-export function receiveQuestions(questions) {
+export const ADD_QUESTION = 'ADD_QUESTION';
+
+function addQuestion(question) {
   return {
-    type: RECEIVE_QUESTIONS,
-    questions
+    type: ADD_QUESTION,
+    question
+  };
+}
+
+export function handleSaveQuestion(optionOneText, optionTwoText, author) {
+  return dispatch => {
+    return saveQuestion({optionOneText, optionTwoText, author}).then(
+      question => {
+        dispatch(addQuestion(question));
+        dispatch(addQuestionToUser(question));
+      }
+    );
   };
 }

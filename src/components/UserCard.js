@@ -1,48 +1,62 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {Segment, Header, Grid, Image} from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
 
 export class UserCard extends Component {
   static propTypes = {
-    userId: PropTypes.string.isRequired,
-    color: PropTypes.string
+    question: PropTypes.object,
+    author: PropTypes.object,
+    pollType: PropTypes.string,
+    unanswered: PropTypes.bool,
+    question_id: PropTypes.string
   };
   render() {
-    const {user, children, color} = this.props;
+    const {
+      author,
+      question,
+      pollType,
+      badPath,
+      unanswered = null
+    } = this.props;
 
-    return (
-      <Segment.Group>
-        <Header
-          as='h5'
-          textAlign='left'
-          block
-          attached='top'
-          style={{
-            borderTop: `2px solid ${color}`
-          }}
-          content={`${user.name} asks:`}
-        />
+    if (badPath === true) {
+      return <Redirect to="/questions/bad_id" />;
+    }
 
-        <Grid divided padded>
-          <Grid.Row>
-            <Grid.Column width={5}>
-              <Image src={user.avatarURL} />
-            </Grid.Column>
-            <Grid.Column width={11}>{children}</Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment.Group>
-    );
+    render(...)
   }
 }
 
-function mapStateToProps({users}, props) {
-  const user = users[props.userId];
+function mapStateToProps(
+  { users, questions, authUser },
+  { match, question_id }
+) {
+  let question,
+    author,
+    pollType,
+    badPath = false;
+  if (question_id !== undefined) {
+    question = questions[question_id];
+    author = users[question.author];
+    pollType = pollTypes.POLL_TEASER;
+  } else {
+    const { question_id } = match.params;
+    question = questions[question_id];
+    const user = users[authUser];
+
+    if (question === undefined) {
+      badPath = true;
+    } else {
+      author = users[question.author];
+      pollType = pollTypes.POLL_QUESTION;
+      if (Object.keys(user.answers).includes(question.id)) {
+        pollType = pollTypes.POLL_RESULT;
+      }
+    }
+  }
 
   return {
-    user
+    badPath,
+    question,
+    author,
+    pollType
   };
 }
-
-export default connect(mapStateToProps)(UserCard);
